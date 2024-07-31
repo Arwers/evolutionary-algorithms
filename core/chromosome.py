@@ -8,7 +8,7 @@ INVALID_VALUES = "Invalid number range in new chromosome."
 
 class Chromosome:
     """
-    Represents single argument in a function.
+    Represents single variable(chromosome) in a multi-variable function.
 
             Parameters:
                     boundaries (tuple): a boundary for generating a variable, in (a, b) format
