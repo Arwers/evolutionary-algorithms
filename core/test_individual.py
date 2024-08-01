@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 from individual import Individual
 
+
 class TestIndividual:
     def setup_method(self):
         self.individual = Individual(genes=5, boundaries=(-5, 5), precision=6)
