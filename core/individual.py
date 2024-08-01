@@ -1,9 +1,10 @@
 import numpy as np
-from .chromosome import Chromosome
+from chromosome import Chromosome
 
 class Individual:
     def __init__(self, genes, boundaries, precision):
         self.genes = genes
+        self.value = 0
         self.individual = np.array([Chromosome(boundaries, precision) for _ in range(genes)])
     
     def __str__(self):
@@ -18,3 +19,9 @@ class Individual:
     
     def get_individual(self):
         return self.individual
+    
+    def set_value(self, function):
+        self.value = function(self.individual)
+    
+    def get_value(self):
+        return self.value
