@@ -1,4 +1,5 @@
 import pytest
 
 class TestPopulation:
-    pass
+    def test_population(self):
+        assert True
