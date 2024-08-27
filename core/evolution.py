@@ -8,7 +8,9 @@ from Mutation import MutationStrategy
 from Crossover import CrossoverStrategy
 from Selection import SelectionStrategy
 from Fitness import FitnessFunction
+import matplotlib
 from matplotlib import pyplot as plt
+matplotlib.use('Agg')
 
 
 class Evolution:
@@ -90,7 +92,7 @@ class Evolution:
                     chromosome.set_chromosome(flipped_chromosome)
 
     def save_history(self, filename: str):
-        with open(filename, "w") as file:
+        with open("App/static/" + filename, "w") as file:
             file.write("generation,best_fitness,best_individual,std,mean\n")
             for generation, best_fitness, best_individual, std, mean in self.history:
                 file.write(
@@ -103,7 +105,8 @@ class Evolution:
         plt.xlabel("Generation")
         plt.ylabel("Fitness")
         plt.title("Fitness over Generations")
-        plt.show()
+        plt.savefig('App/static/Results/plot_fitness.png')
+        plt.close()
 
     def plot_standard_deviation(self) -> List:
         generations = [gen for gen, _, _, _, _ in self.history]
@@ -112,7 +115,9 @@ class Evolution:
         plt.xlabel("Generation")
         plt.ylabel("Standard Deviation")
         plt.title("Standard Deviation over Generations")
-        plt.show()
+        plt.savefig('App/static/Results/plot_std.png')
+        plt.close()
+
         
     def plot_mean(self) -> List:
         generations = [gen for gen, _, _, _, _ in self.history]
@@ -121,7 +126,9 @@ class Evolution:
         plt.xlabel("Generation")
         plt.ylabel("Mean")
         plt.title("Mean over Generations")
-        plt.show()
+        plt.savefig('App/static/Results/plot_mean.png')
+        plt.close()
+
 
     def evolve(self):
         all_time_best_fitness = float("inf")
@@ -133,19 +140,28 @@ class Evolution:
             # Evaluate fitness of the current population
             fitness_scores = self.evaluate_fitness()
 
+            # Determine elitism: preserve the best individuals from the current population
+            if self.elitism:
+                elite_count = int(self.evo_parameters["elitism"] * len(fitness_scores))
+                elite_individuals = sorted(
+                    self.population.get_population(),
+                    key=lambda ind: self.fitness_function.fit(ind)
+                )[:elite_count]
+                elite_individuals = [cp.deepcopy(ind) for ind in elite_individuals]
+
             # Selection process (Note: the selected population should be sorted by fitness)
             selected_population = self.selection_strategy.selection(
                 self.population.get_population(), fitness_scores, self.sel_parameters
             )
 
             # Apply elitism: preserve the best individuals after selection
-            if self.elitism:
-                elite_count = int(self.evo_parameters["elitism"] * len(selected_population))
-                curr_size = len(selected_population)
-                elite_individuals = [
-                    cp.deepcopy(selected_population[curr_size - i - 1])
-                    for i in range(elite_count)
-                ]
+            # if self.elitism:
+            #     elite_count = int(self.evo_parameters["elitism"] * len(selected_population))
+            #     curr_size = len(selected_population)
+            #     elite_individuals = [
+            #         cp.deepcopy(selected_population[curr_size - i - 1])
+            #         for i in range(elite_count)
+            #     ]
 
             # Replace the population with selected individuals (excluding elites)
             self.population.set_population(selected_population)
@@ -203,3 +219,5 @@ class Evolution:
         print(
             f"All time best individual: {all_time_best_individual.get_decimal_variables()}"
         )
+
+        return all_time_best_individual.get_decimal_variables(), all_time_best_fitness

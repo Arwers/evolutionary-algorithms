@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Algorithm Results</h1>
+
+        <div class="results-container centered-container">
+            <!-- Section for raw data -->
+            <div class="raw-data centered-content">
+                <h2 class="purple-text">Best Result</h2>
+                <p><strong>Best Fitness:</strong> {{ best_fitness }}</p>
+                <p><strong>Best Individual:</strong> {{ best_individual }}</p>
+            </div>
+
+            <!-- Section for time taken -->
+            <div class="time-taken centered-content">
+                <h2 class="purple-text">Time Taken</h2>
+                <p>{{ elapsed_time }} seconds</p>
+            </div>
+
+            <!-- Section for displaying plots -->
+            <div class="plots centered-content">
+                <h2 class="purple-text">Plots</h2>
+                <img src="{{ url_for('static', filename='Results/plot_fitness.png') }}" alt="Plot 1">
+                <img src="{{ url_for('static', filename='Results/plot_mean.png') }}" alt="Plot 2">
+                <img src="{{ url_for('static', filename='Results/plot_std.png') }}" alt="Plot 3">
+            </div>
+
+            <!-- Section for downloading data -->
+            <div class="download-section">
+                <h2>Download Results Data</h2>
+                <a href="{{ url_for('static', filename='Results/result.csv') }}" class="button">Download CSV Data</a>
+            </div>
+        </div>
+
+        <br><br>
+        <a href="/" class="button">Run Again</a>
+    </div>
+</body>
+</html>

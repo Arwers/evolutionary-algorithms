@@ -6,6 +6,7 @@ import copy as cp
 from Core.individual import Individual
 from Mutation import MutationStrategy
 from Crossover import CrossoverStrategy
+from Crossover.discrete import DiscreteCrossover
 from Fitness import FitnessFunction
 
 
@@ -79,11 +80,17 @@ class Population:
             crossover_chance = np.random.random()
 
             if crossover_chance < crossover_rate:
-                ind_a, ind_b = crossover_strategy.crossover(
-                    self.population[index_a], self.population[index_b]
-                )
-                new_population.append(ind_a)
-                new_population.append(ind_b)
+                if isinstance(crossover_strategy, DiscreteCrossover):
+                    ind_a = crossover_strategy.crossover(
+                        self.population[index_a], self.population[index_b]
+                    )
+                    new_population.append(ind_a)
+                else:
+                    ind_a, ind_b = crossover_strategy.crossover(
+                        self.population[index_a], self.population[index_b]
+                    )
+                    new_population.append(ind_a)
+                    new_population.append(ind_b)
             else:
                 new_population.append(self.population[index_a])
                 new_population.append(self.population[index_b])

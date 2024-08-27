@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genetic Algorithm Configuration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Configure Genetic Algorithm</h1>
+    <form action="/" method="POST">
+        <h3>Function:</h3>
+        <label for="function">Choose a function:</label>
+        <select name="function" id="function">
+            <option value="Parabola">Parabola</option>
+            <option value="DeJong N.5">DeJong N.5</option>
+            <option value="Levy">Levy</option>
+            <option value="Styblinski-Tang">Styblinski-Tang</option>
+            <option value="HappyCat">HappyCat</option>
+        </select><br><br>
+        
+        <label for="lower_bound">Lower Bound:</label>
+        <input type="number" id="lower_bound" name="lower_bound" step="0.01" required><br><br>
+        
+        <label for="upper_bound">Upper Bound:</label>
+        <input type="number" id="upper_bound" name="upper_bound" step="0.01" required><br><br>
+        
+        <label for="precision">Precision:</label>
+        <input type="number" id="precision" name="precision" step="0.01" required><br><br>
+        
+        <label for="population_size">Population Size:</label>
+        <input type="number" id="population_size" name="population_size" required><br><br>
+        
+        <label for="generations">Generations:</label>
+        <input type="number" id="generations" name="generations" required><br><br>
+        
+        <h3>Selection Method:</h3>
+        <select name="selection" id="selection" onchange="updateSelectionOptions()">
+            <option value="Best">Best</option>
+            <option value="Roulette">Roulette</option>
+            <option value="Tournament">Tournament</option>
+        </select><br><br>
+        
+        <div id="selectionOptions"></div>
+        
+        <h3>Crossover Method:</h3>
+        <select name="crossover">
+            <option value="One Point">One Point</option>
+            <option value="Two Point">Two Point</option>
+            <option value="Three Point">Three Point</option>
+            <option value="Uniform">Uniform</option>
+            <option value="Discrete">Discrete</option>
+        </select><br><br>
+        
+        <label for="crossover_rate">Crossover Rate:</label>
+        <input type="number" id="crossover_rate" name="crossover_rate" min="0" max="1" step="0.01" required><br><br>
+
+        <h3>Mutation Method:</h3>
+        <select name="mutation">
+            <option value="One Point">One Point</option>
+            <option value="Two Point">Two Point</option>
+            <option value="Edge">Edge</option>
+        </select><br><br>
+        
+        <label for="mutation_rate">Mutation Rate:</label>
+        <input type="number" id="mutation_rate" name="mutation_rate" min="0" max="1" step="0.01" required><br><br>
+        
+        <h3>Additional Settings:</h3>
+        <label for="elitism">Elitism:</label>
+        <input type="number" id="elitism" name="elitism" min="0" max="1" step="0.01" required><br><br>
+        
+        <label for="inverse">Inverse:</label>
+        <input type="number" id="inverse" name="inverse" min="0" max="1" step="0.01" required><br><br>
+
+        <input type="submit" value="Run Algorithm">
+    </form>
+
+    <script>
+        function updateSelectionOptions() {
+            const selection = document.getElementById('selection').value;
+            const selectionOptions = document.getElementById('selectionOptions');
+
+            if (selection === 'Tournament') {
+                selectionOptions.innerHTML = `
+                    <label for="tournament_size">Tournament Size:</label>
+                    <input type="number" id="tournament_size" name="tournament_size" required>
+                    <label for="selection_size">Number of Selections:</label>
+                    <input type="number" id="selection_size" name="selection_size" min="0" max="1" step="0.01" required>
+                `;
+            } else if (selection === 'Roulette' || selection === 'Best') {
+                selectionOptions.innerHTML = `
+                    <label for="selection_size">Number of Selections:</label>
+                    <input type="number" id="selection_size" name="selection_size" min="0" max="1" step="0.01" required>
+                `;
+            } else {
+                selectionOptions.innerHTML = '';
+            }
+        }
+
+        // Call the function once on page load to ensure the correct options are displayed
+        window.onload = updateSelectionOptions;
+    </script>
+</body>
+</html>
