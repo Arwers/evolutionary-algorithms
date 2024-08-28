@@ -80,7 +80,7 @@ Discrete crossover selects genes from one parent or the other for the entire chr
 One point mutation randomly alters a single gene in an individual’s chromosome. This strategy introduces small variations, helping to maintain genetic diversity. \
 -**Two point mutation**: \
 Two point mutation changes the values of two randomly chosen genes in the chromosome, allowing for more significant alterations compared to one point mutation. \
--**Edge mutation**: 
+-**Edge mutation**: \
 Edge mutation focuses on altering the connections between genes or nodes in a representation, typically used in graph-based or network problems, to explore the solution space effectively.
 
 ### Implemented functions
