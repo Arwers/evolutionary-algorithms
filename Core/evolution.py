@@ -83,7 +83,7 @@ class Evolution:
         for individual in self.population.get_population():
             for chromosome in individual.get_binary_variables():
                 chance = np.random.rand()
-                if chance > self.evo_parameters["inversion_rate"]:
+                if chance <= self.evo_parameters["inversion_rate"]:
                     point_a = np.random.randint(0, chromosome.size())
                     point_b = np.random.randint(point_a, chromosome.size())
 
@@ -154,14 +154,6 @@ class Evolution:
                 self.population.get_population(), fitness_scores, self.sel_parameters
             )
 
-            # Apply elitism: preserve the best individuals after selection
-            # if self.elitism:
-            #     elite_count = int(self.evo_parameters["elitism"] * len(selected_population))
-            #     curr_size = len(selected_population)
-            #     elite_individuals = [
-            #         cp.deepcopy(selected_population[curr_size - i - 1])
-            #         for i in range(elite_count)
-            #     ]
 
             # Replace the population with selected individuals (excluding elites)
             self.population.set_population(selected_population)
@@ -170,6 +162,7 @@ class Evolution:
             self.population.crossover(
                 self.evo_parameters["crossover_rate"], self.crossover_strategy
             )
+
 
             # Apply mutation
             self.population.mutation(
@@ -211,13 +204,13 @@ class Evolution:
             gen_mean = np.mean(fitness_scores)
             self.history.append((generation + 1, best_fitness, best_individual, gen_std, gen_mean))
 
-            print(f"Best fitness in generation {generation + 1}: {best_fitness}")
-            print(
-                f"Best individual in generation {generation + 1}: {best_individual.get_decimal_variables()}"
-            )
-        print(f"All time best fitness: {all_time_best_fitness}")
-        print(
-            f"All time best individual: {all_time_best_individual.get_decimal_variables()}"
-        )
+        #     print(f"Best fitness in generation {generation + 1}: {best_fitness}")
+        #     print(
+        #         f"Best individual in generation {generation + 1}: {best_individual.get_decimal_variables()}"
+        #     )
+        # print(f"All time best fitness: {all_time_best_fitness}")
+        # print(
+        #     f"All time best individual: {all_time_best_individual.get_decimal_variables()}"
+        # )
 
         return all_time_best_individual.get_decimal_variables(), all_time_best_fitness

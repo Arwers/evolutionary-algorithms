@@ -14,12 +14,14 @@ class OnePointCrossover(CrossoverStrategy):
             chr_a: Chromosome = chromosomes_a[i].get_chromosome()
             chr_b: Chromosome = chromosomes_b[i].get_chromosome()
 
+
             crossover_point = np.random.randint(0, chr_a.size)
 
             # Perform the crossover
             new_chr_a = np.concatenate(
                 (chr_a[:crossover_point], chr_b[crossover_point:])
             )
+
             new_chr_b = np.concatenate(
                 (chr_b[:crossover_point], chr_a[crossover_point:])
             )

@@ -68,6 +68,7 @@ class Population:
         for ind in self.population:
             new_ind = mutation_strategy.mutation(ind, mutation_rate)
             new_population.append(new_ind)
+            
         self.population = new_population
 
     def crossover(self, crossover_rate: float, crossover_strategy: CrossoverStrategy):
@@ -79,7 +80,7 @@ class Population:
             index_b = np.random.randint(0, len(self.population))
             crossover_chance = np.random.random()
 
-            if crossover_chance < crossover_rate:
+            if crossover_chance >= crossover_rate:
                 if isinstance(crossover_strategy, DiscreteCrossover):
                     ind_a = crossover_strategy.crossover(
                         self.population[index_a], self.population[index_b]
@@ -94,7 +95,6 @@ class Population:
             else:
                 new_population.append(self.population[index_a])
                 new_population.append(self.population[index_b])
-
         self.population = new_population
 
     def get_size(self) -> int:
